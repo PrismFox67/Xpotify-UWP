@@ -1,13 +1,14 @@
-> ## Xbox edition — a fork of [LibreSpotUWP](https://github.com/megabytesme/LibreSpotUWP)
+> ## Xpotify UWP — Xbox Dev Mode edition of [LibreSpotUWP](https://github.com/megabytesme/LibreSpotUWP)
 >
 > **All credit for this application goes to [megabytesme](https://github.com/megabytesme).**
 > They built LibreSpotUWP — the entire Spotify client, and the UWP-safe native build of
 > [librespot](https://github.com/librespot-org/librespot) that makes playback possible.
 > Please go star [their repository](https://github.com/megabytesme/LibreSpotUWP).
 >
-> This fork only adds support for running on **Xbox in Developer Mode**, so music keeps
-> playing in the background while you use the dashboard or run homebrew. The changes are
-> small and listed in **[README-SPOTBOX-FORK.md](README-SPOTBOX-FORK.md)**.
+> Xpotify UWP is a fork of **Spotbox**, which ported LibreSpotUWP to **Xbox in Developer
+> Mode** so music keeps playing in the background while you use the dashboard or run
+> homebrew. This fork's changes are in **[README-XPOTIFY.md](README-XPOTIFY.md)**; Spotbox's
+> are in **[README-SPOTBOX-FORK.md](README-SPOTBOX-FORK.md)**.
 >
 > Licensed **CC BY-NC-SA 4.0**, inherited from upstream: attribution required,
 > non-commercial use only, and derivatives must share alike. See [LICENSE.md](LICENSE.md).
