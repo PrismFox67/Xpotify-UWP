@@ -83,6 +83,13 @@ msbuild LibreSpotUWP.sln -t:Restore -p:Configuration=Release -p:Platform=x64
 msbuild LibreSpotUWP.sln -t:Build   -p:Configuration=Release -p:Platform=x64 -p:AppxBundle=Never
 ```
 
+If only a newer Windows SDK is installed, add `-p:TargetPlatformVersion=<version>` to the
+build command (tested with `10.0.26100.0`); the project only uses 19041 as its default.
+
+The prebuilt `librespot.dll` from v1.0.5 imports `XAudio2_8.dll` for its native audio
+backend. If that backend fails on Xbox, the app's `AudioGraph` ring-buffer backend is the
+alternative.
+
 Signing uses `LibreSpotUWP\LibreSpotUWP_TemporaryKey.pfx` (gitignored). Create a
 self-signed certificate whose subject is `CN=PrismFox67` — matching the manifest
 `Publisher` — and export it to that path.
