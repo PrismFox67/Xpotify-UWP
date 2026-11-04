@@ -7,16 +7,16 @@
   IgnorableNamespaces="uap mp uap3">
 
   <Identity
-    Name="Spotbox.LibreSpotXbox"
-    Publisher="CN=Spotbox"
+    Name="PrismFox67.XpotifyUWP"
+    Publisher="CN=PrismFox67"
     Version="1.1.5.0" />
 
-  <mp:PhoneIdentity PhoneProductId="34151aa6-2b17-4a37-bddb-2ee83fdf53e4"
+  <mp:PhoneIdentity PhoneProductId="591b16c8-1467-4452-913d-20d8fb1eb1fa"
                     PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Spotbox</DisplayName>
-    <PublisherDisplayName>Spotbox (fork of LibreSpotUWP by MegaBytesMe)</PublisherDisplayName>
+    <DisplayName>Xpotify UWP</DisplayName>
+    <PublisherDisplayName>PrismFox67 (fork of Spotbox / LibreSpotUWP by MegaBytesMe)</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -36,12 +36,12 @@
                  EntryPoint="LibreSpotUWP.App">
 
       <uap:VisualElements
-        DisplayName="Spotbox"
+        DisplayName="Xpotify UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="LibreSpotUWP is a Spotify client designed with UWP in mind, powered by LibreSpot."
+        Description="Xpotify UWP: an Xbox Dev Mode build of LibreSpotUWP (by MegaBytesMe), a Spotify client powered by librespot."
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="Xpotify UWP"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
 
