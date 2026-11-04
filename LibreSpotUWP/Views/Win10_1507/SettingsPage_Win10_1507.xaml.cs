@@ -81,7 +81,10 @@ namespace LibreSpotUWP.Views.Win10_1507
 
         private void SyncAppearanceRadioSelection()
         {
-            var selectedTag = ModeToTag(AppearanceService.Current);
+            // XPOTIFY FORK
+            var selectedTag = Helpers.XpotifyLayout.IsEnabled
+                ? Helpers.XpotifyLayout.SettingsTag
+                : ModeToTag(AppearanceService.Current);
             _suppressAppearanceChange = true;
 
             foreach (var radioButton in AppearanceStackPanel.Children.OfType<RadioButton>())
@@ -97,6 +100,9 @@ namespace LibreSpotUWP.Views.Win10_1507
 
         private static bool IsAppearanceOptionSupported(string tag)
         {
+            if (tag == Helpers.XpotifyLayout.SettingsTag)
+                return true;
+
             if (tag == "11")
                 return OSHelper.SupportsWin11Appearance;
 
@@ -300,6 +306,14 @@ namespace LibreSpotUWP.Views.Win10_1507
 
             if (sender is RadioButton rb && rb.Tag is string tag)
             {
+                // XPOTIFY FORK: Spotify-style layout (Views/Xpotify).
+                if (tag == Helpers.XpotifyLayout.SettingsTag)
+                {
+                    Helpers.XpotifyLayout.IsEnabled = true;
+                    ApplyAppearanceWithoutRestart();
+                    return;
+                }
+
                 var selectedMode = SettingsPage_Win10_1507.TagToMode(tag);
 
                 SetAppearance(selectedMode);

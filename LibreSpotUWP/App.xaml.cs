@@ -92,11 +92,18 @@ namespace LibreSpotUWP
                     break;
             }
 
-            if (HasThemeResource(appResources, themePath))
+            // XPOTIFY FORK: the Xpotify layout layers its palette over the Win11 theme.
+            const string xpotifyThemePath = "ms-appx:///Themes/Xpotify.xaml";
+            var useXpotify = Helpers.XpotifyLayout.IsEnabled;
+
+            if (HasThemeResource(appResources, themePath) &&
+                HasThemeResource(appResources, xpotifyThemePath) == useXpotify)
                 return;
 
             appResources.MergedDictionaries.Clear();
             appResources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri(themePath) });
+            if (useXpotify)
+                appResources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri(xpotifyThemePath) });
         }
 
         private static bool HasThemeResource(ResourceDictionary appResources, string themePath)

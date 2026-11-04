@@ -9,7 +9,10 @@ namespace LibreSpotUWP.Services
     {
         private const string Key = "AppearanceMode";
 
-        public static AppearanceMode Current => CoerceToSupportedMode(GetStoredOrDefaultMode());
+        // XPOTIFY FORK: the Xpotify layout uses the Win11 content pages.
+        public static AppearanceMode Current => XpotifyLayout.IsEnabled
+            ? AppearanceMode.Win11
+            : CoerceToSupportedMode(GetStoredOrDefaultMode());
 
         private static AppearanceMode GetStoredOrDefaultMode()
         {
@@ -48,6 +51,8 @@ namespace LibreSpotUWP.Services
 
         public static void Set(AppearanceMode mode)
         {
+            // XPOTIFY FORK: picking one of the original appearances leaves the Xpotify layout.
+            XpotifyLayout.IsEnabled = false;
             ApplicationData.Current.LocalSettings.Values[Key] = (int)CoerceToSupportedMode(mode);
         }
     }

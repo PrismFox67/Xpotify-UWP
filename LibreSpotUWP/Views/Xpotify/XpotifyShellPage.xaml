@@ -1,0 +1,445 @@
+<!--
+    XPOTIFY FORK: Spotify-desktop-style shell. Top bar (back, Home, search, account), a
+    "Your Library" sidebar with playlists, the content area, a Now Playing panel and the
+    upstream player bar. Content pages are the Win11 set; they reach this page through
+    IAppShell exactly as they reach Views/Win11/ShellPage.
+-->
+<Page
+    x:Class="LibreSpotUWP.Views.Xpotify.XpotifyShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:LibreSpotUWP.Controls"
+    xmlns:local="using:LibreSpotUWP.Views.Xpotify"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    Background="{StaticResource XpotifyBaseBrush}"
+    RequestedTheme="Dark">
+
+    <Grid x:Name="RootGrid" Padding="8,8,8,0" RowSpacing="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top bar -->
+        <Grid x:Name="TopBar" Grid.Row="0" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                <Button
+                    x:Name="LibraryToggleButton"
+                    Click="LibraryToggleButton_Click"
+                    Style="{StaticResource XpotifyRoundButtonStyle}"
+                    ToolTipService.ToolTip="Your Library">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE8F1;" />
+                </Button>
+                <Button
+                    x:Name="BackButton"
+                    Click="BackButton_Click"
+                    IsEnabled="False"
+                    Style="{StaticResource XpotifyRoundButtonStyle}"
+                    ToolTipService.ToolTip="Back">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="14" Glyph="&#xE72B;" />
+                </Button>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button
+                    x:Name="HomeButton"
+                    Click="HomeButton_Click"
+                    Style="{StaticResource XpotifyRoundButtonStyle}"
+                    ToolTipService.ToolTip="Home">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE80F;" />
+                </Button>
+                <AutoSuggestBox
+                    x:Name="NavigationSearchBox"
+                    Width="420"
+                    PlaceholderText="What do you want to play?"
+                    QueryIcon="Find"
+                    QuerySubmitted="NavigationSearchBox_QuerySubmitted"
+                    Style="{StaticResource XpotifySearchBoxStyle}" />
+            </StackPanel>
+
+            <StackPanel
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="8">
+                <Button
+                    x:Name="NowPlayingToggleButton"
+                    Click="NowPlayingToggleButton_Click"
+                    Style="{StaticResource XpotifyRoundButtonStyle}"
+                    ToolTipService.ToolTip="Now Playing view">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE8A9;" />
+                </Button>
+                <Button
+                    x:Name="SettingsButton"
+                    Click="SettingsButton_Click"
+                    Style="{StaticResource XpotifyRoundButtonStyle}"
+                    ToolTipService.ToolTip="Settings">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE713;" />
+                </Button>
+                <Button
+                    x:Name="AccountButton"
+                    Style="{StaticResource XpotifyRoundButtonStyle}"
+                    ToolTipService.ToolTip="Account">
+                    <Grid Width="32" Height="32">
+                        <muxc:PersonPicture
+                            x:Name="AccountPersonPicture"
+                            Width="32"
+                            Height="32" />
+                        <muxc:ProgressRing
+                            x:Name="AccountLoadingRing"
+                            Width="20"
+                            Height="20"
+                            IsActive="False" />
+                    </Grid>
+                    <Button.Flyout>
+                        <Flyout x:Name="AccountFlyout" Placement="BottomEdgeAlignedRight">
+                            <StackPanel Spacing="8">
+                                <TextBlock
+                                    x:Name="AccountNameText"
+                                    Style="{StaticResource XpotifySectionTitleStyle}"
+                                    Text="Account" />
+                                <controls:SpotifyAccountControl
+                                    x:Name="HeaderAccountControl"
+                                    LoadingStateChanged="HeaderAccountControl_LoadingStateChanged"
+                                    UserChanged="HeaderAccountControl_UserChanged" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main: library | content | now playing -->
+        <Grid x:Name="MainGrid" Grid.Row="1" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LibraryColumn" Width="300" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition x:Name="NowPlayingColumn" Width="320" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Your Library -->
+            <Border
+                x:Name="LibraryPanel"
+                Grid.Column="0"
+                Style="{StaticResource XpotifyPanelStyle}">
+                <Grid Padding="8,12,8,8" RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Padding="8,0">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <FontIcon
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="18"
+                                Foreground="{StaticResource XpotifySubtleTextBrush}"
+                                Glyph="&#xE8F1;" />
+                            <TextBlock Style="{StaticResource XpotifySectionTitleStyle}" Text="Your Library" />
+                        </StackPanel>
+                        <Button
+                            x:Name="LibraryRefreshButton"
+                            Width="32"
+                            Height="32"
+                            HorizontalAlignment="Right"
+                            Click="LibraryRefreshButton_Click"
+                            Style="{StaticResource XpotifyRoundButtonStyle}"
+                            ToolTipService.ToolTip="Refresh library">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE72C;" />
+                        </Button>
+                    </Grid>
+
+                    <!-- Pinned rows -->
+                    <ListView
+                        x:Name="PinnedList"
+                        Grid.Row="1"
+                        IsItemClickEnabled="True"
+                        ItemClick="PinnedList_ItemClick"
+                        ItemContainerStyle="{StaticResource XpotifyLibraryItemStyle}"
+                        SelectionMode="None">
+                        <ListViewItem Tag="LikedSongs">
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Width="48"
+                                    Height="48"
+                                    Background="{StaticResource XpotifyLikedSongsBrush}"
+                                    CornerRadius="4">
+                                    <FontIcon
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="18"
+                                        Foreground="White"
+                                        Glyph="&#xEB52;" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Foreground="White" Text="Liked Songs" />
+                                    <TextBlock Style="{StaticResource XpotifySubtleTextStyle}" Text="Playlist" />
+                                </StackPanel>
+                            </Grid>
+                        </ListViewItem>
+                        <ListViewItem Tag="SpotifyDj">
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Width="48"
+                                    Height="48"
+                                    Background="{StaticResource XpotifyElevatedBrush}"
+                                    CornerRadius="4">
+                                    <FontIcon
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="18"
+                                        Foreground="{StaticResource XpotifyAccentBrush}"
+                                        Glyph="&#xE8D6;" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Foreground="White" Text="DJ" />
+                                    <TextBlock Style="{StaticResource XpotifySubtleTextStyle}" Text="Start your DJ session" />
+                                </StackPanel>
+                            </Grid>
+                        </ListViewItem>
+                    </ListView>
+
+                    <!-- Playlists -->
+                    <Grid Grid.Row="2">
+                        <ListView
+                            x:Name="PlaylistList"
+                            IsItemClickEnabled="True"
+                            ItemClick="PlaylistList_ItemClick"
+                            ItemContainerStyle="{StaticResource XpotifyLibraryItemStyle}"
+                            SelectionMode="Single">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="local:LibraryPlaylistItem">
+                                    <Grid ColumnSpacing="12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="48" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="48"
+                                            Height="48"
+                                            Background="{StaticResource XpotifyElevatedBrush}"
+                                            CornerRadius="4">
+                                            <Image Source="{x:Bind Image}" Stretch="UniformToFill" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                Foreground="White"
+                                                Text="{x:Bind Name}"
+                                                TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Style="{StaticResource XpotifySubtleTextStyle}" Text="{x:Bind Subtitle}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <muxc:ProgressRing
+                            x:Name="LibraryLoadingRing"
+                            Width="32"
+                            Height="32"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Margin="0,24,0,0"
+                            IsActive="False" />
+                        <TextBlock
+                            x:Name="LibraryEmptyText"
+                            Margin="8,16,8,0"
+                            Style="{StaticResource XpotifySubtleTextStyle}"
+                            Text="Your playlists will appear here."
+                            TextWrapping="WrapWholeWords"
+                            Visibility="Collapsed" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <Border
+                x:Name="ContentPanel"
+                Grid.Column="1"
+                Style="{StaticResource XpotifyPanelStyle}">
+                <Grid>
+                    <Frame x:Name="ContentFrame" Background="Transparent" />
+
+                    <Grid
+                        x:Name="CacheStatusPanel"
+                        Margin="12"
+                        Padding="12,6"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Background="{StaticResource XpotifyElevatedBrush}"
+                        ColumnSpacing="8"
+                        CornerRadius="16"
+                        Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            x:Name="CacheRefreshButton"
+                            Width="32"
+                            Height="32"
+                            Click="CacheRefreshButton_Click"
+                            Style="{StaticResource XpotifyRoundButtonStyle}">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE72C;" />
+                        </Button>
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="6">
+                            <TextBlock
+                                x:Name="CacheStatusText"
+                                VerticalAlignment="Center"
+                                Foreground="{StaticResource XpotifyAccentBrush}"
+                                Tapped="CacheStatusText_Tapped"
+                                Text="Cached Content" />
+                            <FontIcon
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                Foreground="{StaticResource XpotifyAccentBrush}"
+                                Glyph="&#xE946;" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Now Playing -->
+            <Border
+                x:Name="NowPlayingPanel"
+                Grid.Column="2"
+                Style="{StaticResource XpotifyPanelStyle}">
+                <ScrollViewer Padding="16" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="16">
+                        <Grid>
+                            <TextBlock
+                                x:Name="NowPlayingContextText"
+                                Margin="0,0,40,0"
+                                Style="{StaticResource XpotifySectionTitleStyle}"
+                                Text="Now Playing" />
+                            <Button
+                                Width="32"
+                                Height="32"
+                                HorizontalAlignment="Right"
+                                Click="NowPlayingToggleButton_Click"
+                                Style="{StaticResource XpotifyRoundButtonStyle}"
+                                ToolTipService.ToolTip="Hide Now Playing view">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="10" Glyph="&#xE711;" />
+                            </Button>
+                        </Grid>
+
+                        <Border
+                            Background="{StaticResource XpotifyElevatedBrush}"
+                            CornerRadius="8">
+                            <Grid>
+                                <Image
+                                    x:Name="NowPlayingArt"
+                                    Stretch="UniformToFill" />
+                                <FontIcon
+                                    x:Name="NowPlayingArtPlaceholder"
+                                    Margin="0,96"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="48"
+                                    Foreground="{StaticResource XpotifySubtleTextBrush}"
+                                    Glyph="&#xE8D6;" />
+                            </Grid>
+                        </Border>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock
+                                x:Name="NowPlayingTitle"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="Nothing playing"
+                                TextTrimming="CharacterEllipsis" />
+                            <HyperlinkButton
+                                x:Name="NowPlayingArtistButton"
+                                Padding="0"
+                                Click="NowPlayingArtistButton_Click"
+                                Foreground="{StaticResource XpotifySubtleTextBrush}">
+                                <TextBlock
+                                    x:Name="NowPlayingArtist"
+                                    FontSize="14"
+                                    TextTrimming="CharacterEllipsis" />
+                            </HyperlinkButton>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button
+                                Click="NowPlayingLyricsButton_Click"
+                                Style="{StaticResource XpotifyRoundButtonStyle}"
+                                ToolTipService.ToolTip="Lyrics">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE720;" />
+                            </Button>
+                            <Button
+                                Click="NowPlayingPlayerButton_Click"
+                                Style="{StaticResource XpotifyRoundButtonStyle}"
+                                ToolTipService.ToolTip="Full screen player">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE740;" />
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Player bar (upstream control, restyled from code-behind) -->
+        <Grid
+            x:Name="MediaBarHost"
+            Grid.Row="2"
+            Margin="-8,0,-8,0"
+            Background="{StaticResource XpotifyBaseBrush}">
+            <controls:MediaControllerBar x:Name="WideMediaBar" Visibility="Collapsed" />
+            <controls:NarrowMediaControllerBar x:Name="NarrowMediaBar" Visibility="Collapsed" />
+        </Grid>
+
+        <Frame
+            x:Name="FullWindowFrame"
+            Grid.RowSpan="3"
+            Margin="-8,-8,-8,0"
+            Background="{StaticResource XpotifyBaseBrush}"
+            Visibility="Collapsed" />
+
+        <Border
+            x:Name="PlaybackRecoveryBanner"
+            Grid.RowSpan="3"
+            MaxWidth="420"
+            Margin="12"
+            Padding="14,10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Background="{StaticResource XpotifyElevatedBrush}"
+            CornerRadius="8"
+            IsHitTestVisible="False"
+            Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal">
+                <muxc:ProgressRing
+                    x:Name="PlaybackRecoveryRing"
+                    Width="18"
+                    Height="18"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    IsActive="False" />
+                <TextBlock
+                    x:Name="PlaybackRecoveryText"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold"
+                    Text="Reconnecting to Spotify..."
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

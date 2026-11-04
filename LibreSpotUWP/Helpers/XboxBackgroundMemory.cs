@@ -186,7 +186,9 @@ namespace LibreSpotUWP.Helpers
 
         private static bool IsShellPage(Type type)
         {
-            return type == typeof(MainPage) || type == typeof(Views.Win11.ShellPage);
+            return type == typeof(MainPage) ||
+                type == typeof(Views.Win11.ShellPage) ||
+                type == typeof(Views.Xpotify.XpotifyShellPage);
         }
 
         private static bool ShouldUnloadProactively(Type type)

@@ -14,6 +14,8 @@ namespace LibreSpotUWP.Helpers
 
             if (pageKey == "Shell")
             {
+                // XPOTIFY FORK
+                if (XpotifyLayout.IsEnabled) return typeof(LibreSpotUWP.Views.Xpotify.XpotifyShellPage);
                 if (mode == AppearanceMode.Win11) return typeof(LibreSpotUWP.Views.Win11.ShellPage);
                 return typeof(MainPage);
             }

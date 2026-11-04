@@ -209,6 +209,7 @@
     <Compile Include="Helpers\OSHelper.cs" />
     <Compile Include="Helpers\XboxExperience.cs" />
     <Compile Include="Helpers\XboxBackgroundMemory.cs" />
+    <Compile Include="Helpers\XpotifyLayout.cs" />
     <Compile Include="XboxLoginPage.xaml.cs">
       <DependentUpon>XboxLoginPage.xaml</DependentUpon>
     </Compile>
@@ -388,6 +389,9 @@
     <Compile Include="Views\Win11\ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Xpotify\XpotifyShellPage.xaml.cs">
+      <DependentUpon>XpotifyShellPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Win11\SettingsPage_Win11.xaml.cs">
       <DependentUpon>SettingsPage_Win11.xaml</DependentUpon>
     </Compile>
@@ -510,6 +514,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Win11.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Xpotify.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Xpotify\XpotifyShellPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

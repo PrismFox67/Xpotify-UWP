@@ -64,6 +64,12 @@
                         Content="Windows 11"
                         GroupName="AppearanceGroup"
                         Tag="11" />
+                    <!-- XPOTIFY FORK -->
+                    <RadioButton
+                        Checked="AppearanceRadio_Checked"
+                        Content="Xpotify (Spotify style)"
+                        GroupName="AppearanceGroup"
+                        Tag="xpotify" />
 
                     <ToggleSwitch
                         x:Name="LyricsThemeToggle"
