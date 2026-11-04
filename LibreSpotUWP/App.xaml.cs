@@ -181,6 +181,9 @@ namespace LibreSpotUWP
                 try
                 {
                     isSignedIn = await EnsureServicesInitializedAsync();
+#if XPOTIFY_UI_PREVIEW
+                    isSignedIn = true;
+#endif
 
                     Frame rootFrame = Window.Current.Content as Frame;
                     if (rootFrame == null)

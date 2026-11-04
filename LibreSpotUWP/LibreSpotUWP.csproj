@@ -138,6 +138,11 @@
   <PropertyGroup Condition="'$(XpotifyForceBackgroundUnload)' == 'true'">
     <DefineConstants>$(DefineConstants);XPOTIFY_FORCE_BG_UNLOAD</DefineConstants>
   </PropertyGroup>
+  <!-- XPOTIFY FORK: pass -p:XpotifyUiPreview=true to open the Xpotify layout with placeholder
+       data and no account. Never set for release builds. -->
+  <PropertyGroup Condition="'$(XpotifyUiPreview)' == 'true'">
+    <DefineConstants>$(DefineConstants);XPOTIFY_UI_PREVIEW</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -390,6 +395,9 @@
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Xpotify\XpotifyShellPage.xaml.cs">
+      <DependentUpon>XpotifyShellPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Xpotify\XpotifyShellPage.Preview.cs">
       <DependentUpon>XpotifyShellPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Win11\SettingsPage_Win11.xaml.cs">

@@ -60,8 +60,24 @@
                     Width="420"
                     PlaceholderText="What do you want to play?"
                     QueryIcon="Find"
-                    QuerySubmitted="NavigationSearchBox_QuerySubmitted"
-                    Style="{StaticResource XpotifySearchBoxStyle}" />
+                    VerticalAlignment="Center"
+                    CornerRadius="22"
+                    QuerySubmitted="NavigationSearchBox_QuerySubmitted">
+                    <!-- Local overrides keep the WinUI template; a Style here would replace it. -->
+                    <AutoSuggestBox.Resources>
+                        <CornerRadius x:Key="ControlCornerRadius">22</CornerRadius>
+                        <x:Double x:Key="TextControlThemeMinHeight">44</x:Double>
+                        <Thickness x:Key="TextControlThemePadding">20,11,8,0</Thickness>
+                        <Thickness x:Key="TextControlBorderThemeThickness">0</Thickness>
+                        <Thickness x:Key="TextControlBorderThemeThicknessFocused">2</Thickness>
+                        <SolidColorBrush x:Key="TextControlBackground" Color="#FF1F1F1F" />
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FF2A2A2A" />
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#FF2A2A2A" />
+                        <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="White" />
+                    </AutoSuggestBox.Resources>
+                </AutoSuggestBox>
             </StackPanel>
 
             <StackPanel

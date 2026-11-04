@@ -41,7 +41,10 @@ the same spirit as Spotbox.
 | `README-XPOTIFY.md` | This file. |
 | `LibreSpotUWP/Helpers/XboxBackgroundMemory.cs` | **New.** Frees the UI when the app goes to the background on Xbox (see below). |
 | `LibreSpotUWP/App.xaml.cs` | One call to `XboxBackgroundMemory.Attach(this)` in the constructor. |
-| `LibreSpotUWP/LibreSpotUWP.csproj` | Registers the new file; optional `XpotifyForceBackgroundUnload` test switch. |
+| `LibreSpotUWP/LibreSpotUWP.csproj` | Registers the new files; optional `XpotifyForceBackgroundUnload` and `XpotifyUiPreview` test switches. |
+| `LibreSpotUWP/Views/Xpotify/`, `LibreSpotUWP/Themes/Xpotify.xaml` | **New.** Spotify-desktop-style shell and palette: top bar, Your Library sidebar, Now Playing panel. |
+| `LibreSpotUWP/Helpers/XpotifyLayout.cs` | **New.** Switch for that layout, on by default. |
+| `AppearanceService.cs`, `NavigationHelper.cs`, `App.xaml.cs`, the three `SettingsPage_*` files | Hook up the layout and add "Xpotify (Spotify style)" under Settings > Appearance. |
 
 Package identity:
 
@@ -85,6 +88,11 @@ already does, and what still has to be confirmed on hardware:
   Never ship that build.
 - **To verify on hardware:** that playback continues on the dashboard, and the log's memory
   figures against the background limit.
+
+## Layout preview
+
+Build with `-p:XpotifyUiPreview=true` to open the Xpotify layout with placeholder data and no
+account. It cannot sign in or play music, so never ship that build.
 
 ## Building
 

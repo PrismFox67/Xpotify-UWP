@@ -42,6 +42,12 @@ namespace LibreSpotUWP.Views.Xpotify
         private const double NowPlayingMinWindowWidth = 900;
         private const double CompactPanelsBelowWidth = 1200;
 
+        private static readonly string[] PlayerBarIconButtons =
+        {
+            "ShuffleButton", "PrevButton", "NextButton", "RepeatButton",
+            "PersistButton", "SpotifyConnectDeviceButton", "OutputDeviceButton"
+        };
+
         private readonly List<string> _history = new List<string>();
         private readonly ObservableCollection<LibraryPlaylistItem> _playlists = new ObservableCollection<LibraryPlaylistItem>();
         private Func<Task> _cacheRefreshAction;
@@ -90,7 +96,14 @@ namespace LibreSpotUWP.Views.Xpotify
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             Window.Current.SizeChanged += Window_SizeChanged;
             RegisterConnectivityEvents();
+            SetTitleBarColors(Windows.UI.Colors.Black, Windows.UI.Colors.White);
 
+#if XPOTIFY_UI_PREVIEW
+            ApplyPlayerBarStyle();
+            UpdateLayoutForWidth();
+            LoadPreview();
+            return;
+#else
             if (App.Media != null && _mediaStateChangedHandler == null)
             {
                 _mediaStateChangedHandler = (s, state) =>
@@ -109,6 +122,7 @@ namespace LibreSpotUWP.Views.Xpotify
             UpdatePlaybackRecoveryBanner(App.Media?.Current);
             UpdateNowPlaying(App.Media?.Current);
             _ = LoadLibraryAsync(forceRefresh: false);
+#endif
         }
 
         private void XpotifyShellPage_Unloaded(object sender, RoutedEventArgs e)
@@ -116,12 +130,28 @@ namespace LibreSpotUWP.Views.Xpotify
             SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Window.Current.SizeChanged -= Window_SizeChanged;
             UnregisterConnectivityEvents();
+            SetTitleBarColors(null, null);
 
             if (App.Media != null && _mediaStateChangedHandler != null)
             {
                 App.Media.MediaStateChanged -= _mediaStateChangedHandler;
                 _mediaStateChangedHandler = null;
             }
+        }
+
+        // No title bar on Xbox; null restores the system colours for the original layouts.
+        private static void SetTitleBarColors(Windows.UI.Color? background, Windows.UI.Color? foreground)
+        {
+            var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView()?.TitleBar;
+            if (titleBar == null)
+                return;
+
+            titleBar.BackgroundColor = background;
+            titleBar.ForegroundColor = foreground;
+            titleBar.InactiveBackgroundColor = background;
+            titleBar.ButtonBackgroundColor = background;
+            titleBar.ButtonForegroundColor = foreground;
+            titleBar.ButtonInactiveBackgroundColor = background;
         }
 
         private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
@@ -135,12 +165,14 @@ namespace LibreSpotUWP.Views.Xpotify
 
             try
             {
+#if !XPOTIFY_UI_PREVIEW
                 await HeaderAccountControl.Initialize();
 
                 if (ContentFrame.Content == null)
                 {
                     NavigateTo(GetStartupPageTag(e.Parameter as string), true);
                 }
+#endif
             }
             catch (Exception ex)
             {
@@ -190,6 +222,16 @@ namespace LibreSpotUWP.Views.Xpotify
                     style is Style playStyle)
                 {
                     playButton.Style = playStyle;
+                }
+
+                // Plain icons rather than square buttons around the transport controls.
+                foreach (var name in PlayerBarIconButtons)
+                {
+                    if (WideMediaBar.FindName(name) is Button button)
+                    {
+                        button.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
+                        button.BorderThickness = new Thickness(0);
+                    }
                 }
             }
             catch (Exception ex)

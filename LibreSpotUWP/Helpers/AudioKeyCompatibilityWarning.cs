@@ -14,6 +14,9 @@ namespace LibreSpotUWP.Helpers
 
         public static async Task<bool> ShowIfNeededAsync(bool allowCancel = false)
         {
+#if XPOTIFY_UI_PREVIEW
+            return true;
+#endif
             if (UserSettings.HideAudioKeyCompatibilityWarning)
                 return true;
 
