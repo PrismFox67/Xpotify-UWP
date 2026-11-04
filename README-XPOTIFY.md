@@ -39,6 +39,9 @@ the same spirit as Spotbox.
 | --- | --- |
 | `LibreSpotUWP/Package.appxmanifest` | New identity so it installs alongside Spotbox and LibreSpotUWP. |
 | `README-XPOTIFY.md` | This file. |
+| `LibreSpotUWP/Helpers/XboxBackgroundMemory.cs` | **New.** Frees the UI when the app goes to the background on Xbox (see below). |
+| `LibreSpotUWP/App.xaml.cs` | One call to `XboxBackgroundMemory.Attach(this)` in the constructor. |
+| `LibreSpotUWP/LibreSpotUWP.csproj` | Registers the new file; optional `XpotifyForceBackgroundUnload` test switch. |
 
 Package identity:
 
@@ -66,9 +69,22 @@ already does, and what still has to be confirmed on hardware:
 - **To verify:** audio is produced by librespot's native XAudio2 backend (the default) or
   by the `AudioGraph` ring buffer, *not* by the `MediaPlayer` that owns the SMTC. Whether
   the Xbox keeps the audio going in the background in that setup is the main thing to test.
-- **To verify:** Xbox caps background apps' memory much lower than foreground apps. If the
-  app goes over it in the background it is suspended or terminated, and the music stops. Nothing
-  currently frees UI memory on `EnteredBackground`; that is the most likely change needed.
+- **Background audio sponsorship is upstream's:** while playing, `MediaService` keeps a
+  `MediaPlayer` running a silent stream so the system treats the app as playing media and
+  doesn't suspend it; the audible PCM goes through librespot's renderer.
+- **Memory (this fork):** Xbox caps background apps' memory much lower than foreground apps;
+  an app over the cap is suspended or terminated and the music stops. `XboxBackgroundMemory`
+  follows Microsoft's pattern for this: on `EnteredBackground` it drops the XAML tree
+  (`Window.Current.Content = null`) when the main shell is showing, and it drops any page if
+  the system lowers the limit below current usage. On return it rebuilds the shell. Services
+  are static on `App`, so playback, SMTC and the librespot session are untouched. Navigation
+  inside the shell resets to Home. It logs memory usage and limit at each step to
+  `TempState\log.txt`, which is the first thing to read after a hardware test.
+- **Testing on a PC:** build with `-p:XpotifyForceBackgroundUnload=true` to enable it off
+  Xbox (from any page, so no account is needed); minimize and restore the window to cycle it.
+  Never ship that build.
+- **To verify on hardware:** that playback continues on the dashboard, and the log's memory
+  figures against the background limit.
 
 ## Building
 

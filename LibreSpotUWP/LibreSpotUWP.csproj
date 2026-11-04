@@ -133,6 +133,11 @@
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
+  <!-- XPOTIFY FORK: pass -p:XpotifyForceBackgroundUnload=true to exercise the Xbox
+       background-memory path on a PC. Never set for release builds. -->
+  <PropertyGroup Condition="'$(XpotifyForceBackgroundUnload)' == 'true'">
+    <DefineConstants>$(DefineConstants);XPOTIFY_FORCE_BG_UNLOAD</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -203,6 +208,7 @@
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="Helpers\OSHelper.cs" />
     <Compile Include="Helpers\XboxExperience.cs" />
+    <Compile Include="Helpers\XboxBackgroundMemory.cs" />
     <Compile Include="XboxLoginPage.xaml.cs">
       <DependentUpon>XboxLoginPage.xaml</DependentUpon>
     </Compile>

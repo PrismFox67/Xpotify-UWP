@@ -60,6 +60,7 @@ namespace LibreSpotUWP
             InitializeComponent();
 
             Helpers.XboxExperience.Apply();
+            Helpers.XboxBackgroundMemory.Attach(this);
 
             Suspending += OnSuspending;
             Resuming += OnResuming;
