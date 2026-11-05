@@ -42,7 +42,7 @@
         Description="Xpotify UWP: an Xbox Dev Mode build of LibreSpotUWP (by MegaBytesMe), a Spotify client powered by librespot."
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="Xpotify UWP"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#000000" />
       </uap:VisualElements>
 
       <Extensions>

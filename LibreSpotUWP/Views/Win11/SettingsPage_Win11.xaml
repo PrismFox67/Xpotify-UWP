@@ -482,7 +482,7 @@
                         <Button
                             HorizontalAlignment="Stretch"
                             Click="AboutButton_Click"
-                            Content="About LibreSpotUWP" />
+                            Content="About Xpotify" />
                         <Button
                             HorizontalAlignment="Stretch"
                             Click="DisclaimerButton_Click"

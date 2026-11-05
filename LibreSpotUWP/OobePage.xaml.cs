@@ -100,7 +100,7 @@ namespace LibreSpotUWP
 
         private async void BtnSpotifySignIn_Click(object sender, RoutedEventArgs e)
         {
-            if (OSHelper.IsXboxFamily)
+            if (OSHelper.IsXboxFamily || XpotifyLayout.IsEnabled)
             {
                 Frame?.Navigate(typeof(XboxLoginPage));
                 return;
@@ -108,7 +108,7 @@ namespace LibreSpotUWP
             if (!await AudioKeyCompatibilityWarning.ShowIfNeededAsync(allowCancel: true))
                 return;
 
-            TxtAuthStatus.Text = "Waiting for Spotify to return to LibreSpotUWP...";
+            TxtAuthStatus.Text = "Waiting for Spotify to return to Xpotify...";
             await App.SpotifyAuth.BeginPkceLoginAsync();
         }
 
@@ -175,7 +175,7 @@ namespace LibreSpotUWP
                 if (!isSignedIn)
                 {
                     TxtAuthStatus.Text = "No Spotify account is connected yet.";
-                    TxtReadyAccount.Text = "Finish sign-in first, then LibreSpotUWP will open.";
+                    TxtReadyAccount.Text = "Finish sign-in first, then Xpotify will open.";
                     return;
                 }
 
@@ -183,6 +183,14 @@ namespace LibreSpotUWP
                 TxtReadyAccount.Text = "Your Spotify account is connected.";
 
                 await TryLoadCurrentUserAsync();
+
+                // XPOTIFY FORK: XboxLoginPage returns to a new OobePage on the welcome slide, which
+                // looked like sign-in had failed. Go straight to the app instead.
+                if (OSHelper.IsXboxFamily || XpotifyLayout.IsEnabled)
+                {
+                    Frame?.Navigate(NavigationHelper.GetPageType("Shell"));
+                    return;
+                }
 
                 if (OobeFlipView.SelectedIndex >= SignInPageIndex && OobeFlipView.SelectedIndex < ReadyPageIndex)
                     await MoveToOobePageAsync(ReadyPageIndex);
@@ -250,7 +258,7 @@ namespace LibreSpotUWP
         private void UpdateDirectSignInUi()
         {
             // SPOTBOX FORK: on Xbox show one button and hide every other sign-in option.
-            if (OSHelper.IsXboxFamily)
+            if (OSHelper.IsXboxFamily || XpotifyLayout.IsEnabled)
             {
                 ApplyXboxSignInUi();
                 return;

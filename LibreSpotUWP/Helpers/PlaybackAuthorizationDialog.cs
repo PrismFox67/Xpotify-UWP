@@ -41,7 +41,7 @@ namespace LibreSpotUWP.Helpers
             {
                 // SPOTBOX FORK: Xbox has no camera, no clipboard hand-off and no working external
                 // browser return, so authorize inside the app's own WebView (XboxLoginPage).
-                if (OSHelper.IsXboxFamily)
+                if (OSHelper.IsXboxFamily || XpotifyLayout.IsEnabled)
                 {
                     var xboxDialog = new ContentDialog
                     {

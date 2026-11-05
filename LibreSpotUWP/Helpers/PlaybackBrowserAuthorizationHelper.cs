@@ -61,7 +61,7 @@ namespace LibreSpotUWP.Helpers
                     Title = "Playback Authorization Received",
                     Content = new TextBlock
                     {
-                        Text = "LibreSpotUWP is finishing the one-time playback connection. Future launches will use the reusable credential saved securely on this device.",
+                        Text = "Xpotify is finishing the one-time playback connection. Future launches will use the reusable credential saved securely on this device.",
                         TextWrapping = TextWrapping.Wrap
                     },
                     PrimaryButtonText = "OK"

@@ -38,7 +38,7 @@ namespace LibreSpotUWP.Helpers
                 content.Children.Add(new TextBlock
                 {
                     Text =
-                        "Spotify does not expose an account creation date to LibreSpotUWP, so the app cannot determine in " +
+                        "Spotify does not expose an account creation date to Xpotify, so the app cannot determine in " +
                         "advance whether this account is affected. You can continue, but playback is not guaranteed.",
                     TextWrapping = TextWrapping.Wrap,
                     Margin = new Thickness(0, 0, 0, 12)

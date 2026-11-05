@@ -14,7 +14,7 @@ namespace LibreSpotUWP.Helpers
             var content = new StackPanel();
             content.Children.Add(new TextBlock
             {
-                Text = exception?.Message ?? "LibreSpotUWP requires a Spotify Premium account. Free Spotify accounts are not supported.",
+                Text = exception?.Message ?? "Xpotify requires a Spotify Premium account. Free Spotify accounts are not supported.",
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0, 0, 0, 12)
             });

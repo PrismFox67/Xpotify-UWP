@@ -68,9 +68,9 @@ namespace LibreSpotUWP.Exceptions
                 ? "not reported as Premium"
                 : "reported as Spotify " + product;
 
-            return "LibreSpotUWP requires a Spotify Premium account. This account is " +
+            return "Xpotify requires a Spotify Premium account. This account is " +
                 accountType +
-                ", so it cannot be used with LibreSpotUWP. Please upgrade to Spotify Premium and try signing in again.";
+                ", so it cannot be used with Xpotify. Please upgrade to Spotify Premium and try signing in again.";
         }
     }
 }

@@ -740,7 +740,7 @@ namespace LibreSpotUWP.Services
             {
                 Kind = LiveTileItemKind.Track,
                 Title = "Now playing",
-                Subtitle = "LibreSpotUWP"
+                Subtitle = "Xpotify"
             };
             var imageSource = ResolveTileImageSource(track.ImageUrl, useFallback: true);
             var sourceName = state?.IsSpotifyConnectRemote == true
@@ -778,7 +778,7 @@ namespace LibreSpotUWP.Services
                 {
                     Kind = LiveTileItemKind.Track,
                     Title = "Ready to play",
-                    Subtitle = "Open LibreSpotUWP"
+                    Subtitle = "Open Xpotify"
                 });
             }
 
@@ -801,7 +801,7 @@ namespace LibreSpotUWP.Services
                 {
                     Kind = LiveTileItemKind.Track,
                     Title = "Ready to play",
-                    Subtitle = "Open LibreSpotUWP"
+                    Subtitle = "Open Xpotify"
                 });
             }
 
@@ -924,7 +924,7 @@ namespace LibreSpotUWP.Services
             var visual = new XElement(
                 "visual",
                 new XAttribute("branding", "nameAndLogo"),
-                new XAttribute("displayName", "LibreSpotUWP"),
+                new XAttribute("displayName", "Xpotify"),
                 small,
                 medium,
                 wide,

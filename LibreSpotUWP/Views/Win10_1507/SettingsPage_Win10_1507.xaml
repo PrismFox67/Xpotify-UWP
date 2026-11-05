@@ -496,7 +496,7 @@
                         Margin="0,0,0,8"
                         HorizontalAlignment="Stretch"
                         Click="AboutButton_Click"
-                        Content="About LibreSpotUWP" />
+                        Content="About Xpotify" />
 
                     <Button
                         HorizontalAlignment="Stretch"

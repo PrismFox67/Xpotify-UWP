@@ -1774,7 +1774,7 @@ namespace LibreSpotUWP.Services
         private static string ComputeDeviceId(string deviceName)
         {
             if (string.IsNullOrWhiteSpace(deviceName))
-                deviceName = "LibreSpotUWP";
+                deviceName = "Xpotify";
 
             using (var sha1 = SHA1.Create())
             {

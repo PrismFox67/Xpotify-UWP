@@ -56,7 +56,7 @@ namespace LibreSpotUWP.Helpers
                 _session = new ExtendedExecutionSession
                 {
                     Reason = ExtendedExecutionReason.Unspecified,
-                    Description = "LibreSpotUWP is connected to Spotify."
+                    Description = "Xpotify is connected to Spotify."
                 };
 
                 _session.Revoked += Session_Revoked;

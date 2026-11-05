@@ -43,7 +43,7 @@
                                 HorizontalAlignment="Center"
                                 FontSize="30"
                                 FontWeight="SemiBold"
-                                Text="Welcome to LibreSpotUWP"
+                                Text="Welcome to Xpotify"
                                 TextAlignment="Center"
                                 TextWrapping="WrapWholeWords" />
 
@@ -91,12 +91,12 @@
                             <TextBlock
                                 x:Name="HowItWorksIntro"
                                 Style="{StaticResource BodyTextStyle}"
-                                Text="LibreSpotUWP needs a Spotify login session before the main app opens. The easiest path is to use the LibreSpotUWP Login Helper on another Windows device, then scan the QR code or paste the sign-in details here." />
+                                Text="Xpotify needs a Spotify login session before the main app opens. The easiest path is to use the Xpotify Login Helper on another Windows device, then scan the QR code or paste the sign-in details here." />
 
                             <TextBlock
                                 FontWeight="SemiBold"
                                 Style="{StaticResource BodyTextStyle}"
-                                Text="A Spotify Premium account is required. Spotify Free accounts are not supported by LibreSpotUWP." />
+                                Text="A Spotify Premium account is required. Spotify Free accounts are not supported by Xpotify." />
 
                             <TextBlock
                                 x:Name="HowItWorksDirect"
@@ -201,7 +201,7 @@
                                             <TextBlock FontWeight="SemiBold" Text="Scan QR code" />
                                             <TextBlock
                                                 Opacity="0.72"
-                                                Text="Point this device at a Login Helper QR code or another signed-in LibreSpotUWP device."
+                                                Text="Point this device at a Login Helper QR code or another signed-in Xpotify device."
                                                 TextWrapping="Wrap" />
                                         </StackPanel>
                                     </Grid>
@@ -313,7 +313,7 @@
                             Width="240"
                             Height="56"
                             Click="BtnLaunch_Click"
-                            Content="Launch LibreSpotUWP"
+                            Content="Launch Xpotify"
                             FontSize="16"
                             Style="{ThemeResource AccentButtonStyle}" />
                     </StackPanel>

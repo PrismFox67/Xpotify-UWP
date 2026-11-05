@@ -598,7 +598,7 @@ namespace LibreSpotUWP.Views.Win10_1709
         {
             var dialog = CreateDialog();
             dialog.Title = "Reset All Settings";
-            dialog.Content = "This will delete all LibreSpotUWP configuration and cached data. Continue?";
+            dialog.Content = "This will delete all Xpotify configuration and cached data. Continue?";
             dialog.PrimaryButtonText = "Yes";
             dialog.SecondaryButtonText = "No";
 
@@ -645,7 +645,7 @@ namespace LibreSpotUWP.Views.Win10_1709
                 {
                     Inlines =
                     {
-                        new Run { Text = "LibreSpotUWP", FontWeight = FontWeights.Bold, FontSize = 18 },
+                        new Run { Text = "Xpotify UWP (based on LibreSpotUWP)", FontWeight = FontWeights.Bold, FontSize = 18 },
                         new LineBreak(),
                         new Run { Text = $"Version {OSHelper.AppVersion} ({OSHelper.PlatformFamily}) {OSHelper.Architecture}" },
                         new LineBreak(),
