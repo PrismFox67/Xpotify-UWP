@@ -125,8 +125,20 @@ namespace LibreSpotUWP.Views.Xpotify
 #endif
         }
 
+        // Called by XboxBackgroundMemory before the UI is dropped. The inner frames keep their
+        // own history and page cache, which would otherwise hold Home and its images.
+        public void ReleaseContentForUnload()
+        {
+            HeaderAccountControl.ReleaseSubscriptions();
+            XboxBackgroundMemory.ClearFrame(ContentFrame);
+            XboxBackgroundMemory.ClearFrame(FullWindowFrame);
+            ContentFrame.Content = null;
+            FullWindowFrame.Content = null;
+        }
+
         private void XpotifyShellPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            LogService.Info("[XpotifyShellPage] Unloaded fired; releasing app-lifetime subscriptions.");
             SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Window.Current.SizeChanged -= Window_SizeChanged;
             UnregisterConnectivityEvents();

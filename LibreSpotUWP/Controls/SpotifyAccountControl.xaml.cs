@@ -104,6 +104,11 @@ namespace LibreSpotUWP.Controls
             await RefreshUserProfileAsync();
         }
 
+        // XPOTIFY FORK: a control inside a closed Flyout is never loaded, so Unloaded never
+        // fires and the singleton subscriptions above keep the whole page alive. Whoever
+        // drops the UI calls this instead.
+        public void ReleaseSubscriptions() => OnUnloaded(this, null);
+
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             SpotifyAccountManager.Instance.UserChanged -= OnGlobalUserChanged;

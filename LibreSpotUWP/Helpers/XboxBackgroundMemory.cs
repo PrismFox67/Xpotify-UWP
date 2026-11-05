@@ -26,6 +26,8 @@ namespace LibreSpotUWP.Helpers
         private static bool _inBackground;
         private static bool _uiUnloaded;
         private static Type _unloadedPageType;
+        private static readonly System.Collections.Generic.List<WeakReference<object>> _droppedPages =
+            new System.Collections.Generic.List<WeakReference<object>>();
 
         public static bool IsEnabled
         {
@@ -127,9 +129,11 @@ namespace LibreSpotUWP.Helpers
             if (window == null || window.Content == null) { return; }
 
             _unloadedPageType = CurrentPage()?.GetType();
+            if (CurrentPage() != null) { _droppedPages.Add(new WeakReference<object>(CurrentPage())); }
             _uiUnloaded = true;
 
             var before = MemoryManager.AppMemoryUsage;
+            ReleaseTree(window.Content as Frame);
             window.Content = null;
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -142,18 +146,63 @@ namespace LibreSpotUWP.Helpers
             _ = LogSettledUsageAsync();
         }
 
+        // Clearing Window.Content alone leaves the tree alive if anything still references a
+        // page, so break the links first: frame history, the page cache and the visual tree.
+        private static void ReleaseTree(Frame rootFrame)
+        {
+            if (rootFrame == null) { return; }
+
+            try
+            {
+                (rootFrame.Content as Views.Xpotify.XpotifyShellPage)?.ReleaseContentForUnload();
+                ClearFrame(rootFrame);
+                Windows.UI.Xaml.Media.VisualTreeHelper.DisconnectChildrenRecursive(rootFrame);
+            }
+            catch (Exception ex)
+            {
+                LogService.Warn("[XboxBackgroundMemory] tree release failed - " + ex.Message);
+            }
+        }
+
+        public static void ClearFrame(Frame frame)
+        {
+            frame.BackStack.Clear();
+            frame.ForwardStack.Clear();
+            var cacheSize = frame.CacheSize;
+            frame.CacheSize = 0;
+            frame.CacheSize = cacheSize;
+        }
+
         private static async System.Threading.Tasks.Task LogSettledUsageAsync()
         {
             try
             {
                 await System.Threading.Tasks.Task.Delay(3000);
-                GC.Collect();
-                if (_uiUnloaded) { Log("settled after unload"); }
+                LogDroppedPages("settled after unload");
+                // XAML can release native peers on a later frame, so check again before
+                // concluding that a page is being held.
+                await System.Threading.Tasks.Task.Delay(27000);
+                LogDroppedPages("30s after unload");
             }
             catch (Exception ex)
             {
                 LogService.Warn("[XboxBackgroundMemory] settled usage log failed - " + ex.Message);
             }
+        }
+
+        private static void LogDroppedPages(string stage)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+
+            var alive = 0;
+            foreach (var page in _droppedPages)
+            {
+                if (page.TryGetTarget(out _)) { alive++; }
+            }
+
+            if (_uiUnloaded) { Log($"{stage}; dropped pages alive={alive}/{_droppedPages.Count}"); }
         }
 
         private static void Restore()
@@ -246,6 +295,7 @@ namespace LibreSpotUWP.Helpers
         {
             LogService.Info(
                 $"[XboxBackgroundMemory] {message}. usage={Mb(MemoryManager.AppMemoryUsage)} " +
+                $"managed={Mb((ulong)GC.GetTotalMemory(false))} " +
                 $"limit={Mb(MemoryManager.AppMemoryUsageLimit)} level={MemoryManager.AppMemoryUsageLevel}");
         }
 
