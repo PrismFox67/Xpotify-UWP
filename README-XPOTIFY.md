@@ -46,6 +46,7 @@ the same spirit as Spotbox.
 | `LibreSpotUWP/Helpers/XpotifyLayout.cs` | **New.** Switch for that layout, on by default. |
 | `UserSettings.cs`, `LibrespotService.cs`, the three `SettingsPage_*` files | "Streaming quality" setting (96, 160 or 320 kbps; default 320). |
 | `SpotifyAccountControl.xaml.cs`, `XpotifyShellPage.xaml.cs` | Release the account control and inner frames when the UI is dropped; without this every old shell page stayed in memory. |
+| `ImageUriHelper.cs`, `HeaderImageControl.xaml.cs`, `HomePage_Win11.xaml` | Decode artwork near display size instead of at about 640px, to avoid memory spikes on returning from the background. |
 | `AppearanceService.cs`, `NavigationHelper.cs`, `App.xaml.cs`, the three `SettingsPage_*` files | Hook up the layout and add "Xpotify (Spotify style)" under Settings > Appearance. |
 
 Package identity:

@@ -74,7 +74,7 @@
             <StackPanel Width="140" Margin="0,0,12,12">
                 <Image Width="140" Height="140">
                     <Image.Source>
-                        <imaging:BitmapImage UriSource="{x:Bind ImageUri, Mode=OneWay}" />
+                        <imaging:BitmapImage DecodePixelWidth="280" UriSource="{x:Bind ImageUri, Mode=OneWay}" />
                     </Image.Source>
                 </Image>
                 <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
@@ -89,7 +89,7 @@
             <StackPanel Width="140" Margin="0,0,12,12">
                 <Image Width="140" Height="140">
                     <Image.Source>
-                        <imaging:BitmapImage UriSource="{x:Bind ImageUri, Mode=OneWay}" />
+                        <imaging:BitmapImage DecodePixelWidth="280" UriSource="{x:Bind ImageUri, Mode=OneWay}" />
                     </Image.Source>
                 </Image>
                 <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
@@ -104,7 +104,7 @@
             <StackPanel Width="140" Margin="0,0,12,12">
                 <Image Width="140" Height="140">
                     <Image.Source>
-                        <imaging:BitmapImage UriSource="{x:Bind ImageUri, Mode=OneWay}" />
+                        <imaging:BitmapImage DecodePixelWidth="280" UriSource="{x:Bind ImageUri, Mode=OneWay}" />
                     </Image.Source>
                 </Image>
                 <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />

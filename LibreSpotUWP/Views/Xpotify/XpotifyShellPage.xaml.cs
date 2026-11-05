@@ -369,7 +369,8 @@ namespace LibreSpotUWP.Views.Xpotify
 
         private void UpdateNowPlaying(MediaState state)
         {
-            var hasTrack = state != null && !string.IsNullOrWhiteSpace(state.DisplayTitle);
+            var hasTrack = state != null && !string.IsNullOrWhiteSpace(state.DisplayTitle) &&
+                !string.Equals(state.DisplayTitle, "Unknown Track", StringComparison.Ordinal);
 
             NowPlayingTitle.Text = hasTrack ? state.DisplayTitle : "Nothing playing";
             NowPlayingArtist.Text = hasTrack ? state.DisplayArtist ?? string.Empty : string.Empty;

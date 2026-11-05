@@ -114,7 +114,7 @@ namespace LibreSpotUWP.Controls {
             }
 
             var img = album.Images?.FirstOrDefault()?.Url;
-            MainImage.Source = ImageUriHelper.CreateBitmapImage(img, useFallback: true);
+            MainImage.Source = ImageUriHelper.CreateBitmapImage(img, useFallback: true, decodeWidth: ImageUriHelper.HeaderDecodeWidth);
             MetadataPanel.Children.Clear();
             MetadataPanel.Children.Add(new TextBlock { Text = $"Released: {album.ReleaseDate}", TextWrapping = TextWrapping.Wrap });
             MetadataPanel.Children.Add(new TextBlock { Text = $"Label: {album.Label}", TextWrapping = TextWrapping.Wrap });
@@ -151,7 +151,7 @@ namespace LibreSpotUWP.Controls {
             });
 
             var img = artist.Images?.FirstOrDefault()?.Url;
-            MainImage.Source = ImageUriHelper.CreateBitmapImage(img, useFallback: true);
+            MainImage.Source = ImageUriHelper.CreateBitmapImage(img, useFallback: true, decodeWidth: ImageUriHelper.HeaderDecodeWidth);
 
             ImageBorder.CornerRadius = new CornerRadius(70);
 
@@ -182,7 +182,7 @@ namespace LibreSpotUWP.Controls {
             }
 
             var img = playlist.Images?.FirstOrDefault()?.Url;
-            MainImage.Source = ImageUriHelper.CreateBitmapImage(img, useFallback: true);
+            MainImage.Source = ImageUriHelper.CreateBitmapImage(img, useFallback: true, decodeWidth: ImageUriHelper.HeaderDecodeWidth);
 
             ImageBorder.CornerRadius = new CornerRadius(4);
 

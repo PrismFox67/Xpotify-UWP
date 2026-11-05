@@ -9,6 +9,11 @@ namespace LibreSpotUWP.Helpers
         private const string SpotifyImagePrefix = "spotify:image:";
         private const string SpotifyCdnPrefix = "https://i.scdn.co/image/";
 
+        // XPOTIFY FORK: Spotify's first image is about 640px, which decodes to 1.6 MB however
+        // small it is drawn. Xbox allows 128 MB in the background, so decode near display size.
+        public const int ThumbnailDecodeWidth = 320;
+        public const int HeaderDecodeWidth = 640;
+
         public static string NormalizeImageUrl(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -46,12 +51,12 @@ namespace LibreSpotUWP.Helpers
             return GetFallbackLogoUri();
         }
 
-        public static BitmapImage CreateBitmapImage(string value, bool useFallback = true)
+        public static BitmapImage CreateBitmapImage(string value, bool useFallback = true, int decodeWidth = ThumbnailDecodeWidth)
         {
             try
             {
                 if (TryCreateImageUri(value, out var uri))
-                    return new BitmapImage(uri);
+                    return new BitmapImage { DecodePixelWidth = decodeWidth, UriSource = uri };
             }
             catch
             {
