@@ -55,6 +55,7 @@ namespace LibreSpotUWP.Views.Win10_1507
             ResumeLastPlaybackToggle.Visibility = resumeVisible;
             ResumeLastPlaybackDescription.Visibility = resumeVisible;
             RememberLastPageToggle.IsOn = UserSettings.RememberLastPage;
+            SelectStreamingBitrate(UserSettings.StreamingBitrate);
             SelectAudioBackend(UserSettings.AudioBackend);
             UpdateAudioBackendCapabilities();
             SelectAudioEffectsPreset(UserSettings.AudioEffectsPreset);
@@ -338,6 +339,24 @@ namespace LibreSpotUWP.Views.Win10_1507
             }
 
             AudioEffectsComboBox.SelectedIndex = 0;
+        }
+
+        private void SelectStreamingBitrate(int bitrate)
+        {
+            var tag = bitrate.ToString();
+            StreamingQualityComboBox.SelectedItem = StreamingQualityComboBox.Items
+                .OfType<ComboBoxItem>()
+                .FirstOrDefault(item => item.Tag as string == tag);
+        }
+
+        private void StreamingQualityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_loading)
+                return;
+
+            var tag = (StreamingQualityComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
+            if (int.TryParse(tag, out int bitrate))
+                UserSettings.StreamingBitrate = bitrate;
         }
 
         private void SelectAudioBackend(AudioBackendKind backend)

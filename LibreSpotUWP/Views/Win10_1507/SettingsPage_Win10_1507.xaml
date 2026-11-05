@@ -273,6 +273,25 @@
                     <TextBlock
                         Margin="0,16,0,0"
                         Style="{StaticResource BodyTextBlockStyle}"
+                        Text="Streaming quality" />
+                    <ComboBox
+                        x:Name="StreamingQualityComboBox"
+                        Margin="0,8,0,0"
+                        SelectionChanged="StreamingQualityComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Low (96 kbps)" Tag="96" />
+                        <ComboBoxItem Content="Medium (160 kbps)" Tag="160" />
+                        <ComboBoxItem Content="High (320 kbps)" Tag="320" />
+                    </ComboBox>
+                    <TextBlock
+                        Margin="0,6,0,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="Applies the next time Xpotify starts."
+                        TextWrapping="WrapWholeWords" />
+
+                    <TextBlock
+                        Margin="0,16,0,0"
+                        Style="{StaticResource BodyTextBlockStyle}"
                         Text="Audio backend" />
                     <ComboBox
                         x:Name="AudioBackendComboBox"

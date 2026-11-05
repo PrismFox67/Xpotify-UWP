@@ -20,6 +20,7 @@ namespace LibreSpotUWP.Helpers
         private const string AudioLimiterEffectEnabledKey = "AudioLimiterEffectEnabled";
         private const string AudioOutputDeviceIdKey = "AudioOutputDeviceId";
         private const string AudioBackendKey = "AudioBackend";
+        private const string StreamingBitrateKey = "StreamingBitrate";
         private const string SpotifyConnectDeviceIdKey = "SpotifyConnectDeviceId";
         private const string SpotifyCustomClientIdKey = "SpotifyCustomClientId";
         private const string HideAudioKeyCompatibilityWarningKey = "HideAudioKeyCompatibilityWarning";
@@ -167,6 +168,22 @@ namespace LibreSpotUWP.Helpers
                     : AudioBackendKind.RustXAudio2;
                 ApplicationData.Current.LocalSettings.Values[AudioBackendKey] = (int)normalized;
             }
+        }
+
+        // XPOTIFY FORK: kbps requested from librespot (96, 160 or 320). Read when the session starts.
+        public static int StreamingBitrate
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.TryGetValue(StreamingBitrateKey, out object value) &&
+                    value is int stored && (stored == 96 || stored == 160))
+                {
+                    return stored;
+                }
+
+                return 320;
+            }
+            set => ApplicationData.Current.LocalSettings.Values[StreamingBitrateKey] = value;
         }
 
         public static string SpotifyConnectDeviceId

@@ -1744,7 +1744,7 @@ namespace LibreSpotUWP.Services
                 persisted_cache_dir = AllocUtf8String(persistedCacheDir),
                 enable_discovery = false,
                 enable_volume_normalisation = false,
-                bitrate = Bitrate.B320,
+                bitrate = (Bitrate)UserSettings.StreamingBitrate,
                 format = _audioFormat.LibrespotFormat,
                 initial_volume = initialVolume,
                 username = IntPtr.Zero,
