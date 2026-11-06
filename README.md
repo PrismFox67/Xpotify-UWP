@@ -1,3 +1,7 @@
+### Download
+[![Xbox app downloads](https://img.shields.io/github/downloads/PrismFox67/Xpotify-UWP/total?label=Xbox%20app%20downloads&color=107c10&cacheSeconds=3600)](https://github.com/PrismFox67/Xpotify-UWP/releases)
+(all builds since 11/5/2026)
+
 > ## Xpotify UWP — Xbox Dev Mode edition of [LibreSpotUWP](https://github.com/megabytesme/LibreSpotUWP)
 >
 > **All credit for this application goes to [megabytesme](https://github.com/megabytesme).**
