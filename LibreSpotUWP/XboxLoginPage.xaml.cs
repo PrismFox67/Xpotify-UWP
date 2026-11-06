@@ -24,6 +24,7 @@ namespace LibreSpotUWP
         private bool _playbackPhase;
         private bool _codeHandled;
         private string _accountId;
+        private bool _browserReleased;
 
         public XboxLoginPage()
         {
@@ -50,6 +51,8 @@ namespace LibreSpotUWP
                 return;
             }
 
+            if (_browserReleased) { return; }
+
             if (loginUri == null)
             {
                 ShowError("Could not build the Spotify sign-in URL. No client ID is available.");
@@ -60,6 +63,7 @@ namespace LibreSpotUWP
             {
                 SetStatus("Starting browser...");
                 await LoginView.EnsureCoreWebView2Async();
+                if (_browserReleased) { return; }
 
                 var core = LoginView.CoreWebView2;
                 if (core == null)
@@ -83,6 +87,38 @@ namespace LibreSpotUWP
             {
                 LogService.Error(ex, "In-app login failed to start");
                 ShowError("Sign-in could not start: " + ex.Message);
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            ReleaseBrowser();
+        }
+
+        // XPOTIFY FORK: leaving the page does not shut WebView2 down. Going to the background
+        // soon after a fresh sign-in measured 355 MB against the 128 MB Xbox limit, and the app
+        // was closed. Close the browser explicitly so it cannot outlive sign-in.
+        public void ReleaseBrowser()
+        {
+            if (_browserReleased) { return; }
+            _browserReleased = true;
+
+            try
+            {
+                XboxBackgroundMemory.LogUsage("closing sign-in browser");
+
+                var core = LoginView.CoreWebView2;
+                if (core != null) { core.NavigationStarting -= Core_NavigationStarting; }
+
+                (LoginView.Parent as Panel)?.Children.Remove(LoginView);
+                LoginView.Close();
+
+                XboxBackgroundMemory.LogUsageAfterDelay("sign-in browser closed");
+            }
+            catch (Exception ex)
+            {
+                LogService.Warn("XboxLoginPage: browser close failed - " + ex.Message);
             }
         }
 

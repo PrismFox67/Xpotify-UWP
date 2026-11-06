@@ -155,6 +155,7 @@ namespace LibreSpotUWP.Helpers
             try
             {
                 (rootFrame.Content as Views.Xpotify.XpotifyShellPage)?.ReleaseContentForUnload();
+                (rootFrame.Content as XboxLoginPage)?.ReleaseBrowser();
                 ClearFrame(rootFrame);
                 Windows.UI.Xaml.Media.VisualTreeHelper.DisconnectChildrenRecursive(rootFrame);
             }
@@ -288,6 +289,25 @@ namespace LibreSpotUWP.Helpers
             catch (Exception ex)
             {
                 LogService.Warn("[XboxBackgroundMemory] UI dispatch failed - " + ex.Message);
+            }
+        }
+
+        public static void LogUsage(string message)
+        {
+            Log(message);
+        }
+
+        // The browser's processes exit shortly after it is closed, so measure a moment later.
+        public static async void LogUsageAfterDelay(string message)
+        {
+            try
+            {
+                await System.Threading.Tasks.Task.Delay(5000);
+                Log(message);
+            }
+            catch (Exception ex)
+            {
+                LogService.Warn("[XboxBackgroundMemory] delayed usage log failed - " + ex.Message);
             }
         }
 
