@@ -137,4 +137,4 @@ same submission, its framework dependencies (`Microsoft.UI.Xaml.2.8`, `Microsoft
 
 ## Status
 
-Early. Not yet confirmed working on real hardware.
+Test build. Background playback across several songs confirmed on Xbox Series X in Dev Mode. Spotify DJ does not work yet.

@@ -9,7 +9,7 @@
   <Identity
     Name="PrismFox67.XpotifyUWP"
     Publisher="CN=PrismFox67"
-    Version="1.1.5.0" />
+    Version="1.1.7.0" />
 
   <mp:PhoneIdentity PhoneProductId="591b16c8-1467-4452-913d-20d8fb1eb1fa"
                     PhonePublisherId="00000000-0000-0000-0000-000000000000"/>

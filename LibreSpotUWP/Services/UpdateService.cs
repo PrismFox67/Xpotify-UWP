@@ -18,8 +18,8 @@ namespace LibreSpotUWP.Services
 
     public static class UpdateService
     {
-        private const string RepoOwner = "megabytesme";
-        private const string RepoName = "LibreSpotUWP";
+        private const string RepoOwner = "PrismFox67";
+        private const string RepoName = "Xpotify-UWP";
 
         public static async Task<UpdateInfo> CheckForUpdatesAsync()
         {

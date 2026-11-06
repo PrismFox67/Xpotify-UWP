@@ -122,6 +122,7 @@ namespace LibreSpotUWP.Services
         private bool _restoredSnapshotPendingResume;
         private uint _lastPersistedSnapshotPositionMs = uint.MaxValue;
         private uint _pendingRestoreSeekMs = uint.MaxValue;
+        private const long EndOfTrackResumeMarginMs = 2000;
         private string _pendingRestoreTrackUri;
         private DateTimeOffset _lastSnapshotWriteAt = DateTimeOffset.MinValue;
         private readonly LatestWorkCoalescer _snapshotWriteQueue = new LatestWorkCoalescer(
@@ -1338,6 +1339,27 @@ namespace LibreSpotUWP.Services
                     string.IsNullOrWhiteSpace(_lastPlaybackSnapshot.ContextUri) ? _lastPlaybackSnapshot.TrackUri : _lastPlaybackSnapshot.ContextUri,
                     _lastPlaybackSnapshot.TrackUri);
 
+                return;
+            }
+
+            // XPOTIFY FORK: when the queue ends or a session restarts, the player still shows the
+            // last song but librespot has nothing loaded, so a plain resume is ignored with
+            // "Player::play called from invalid state: Stopped". Load the song on screen instead.
+            var shownTrackUri = Current.Track?.Uri;
+            if (_librespot.PlaybackState == LibrespotPlaybackState.Stopped &&
+                !string.IsNullOrWhiteSpace(shownTrackUri))
+            {
+                var contextUri = Current.ContextUri;
+                if (string.IsNullOrWhiteSpace(contextUri) || SpotifyDjHelper.IsHomeDjPlaylistUri(contextUri))
+                    contextUri = shownTrackUri;
+
+                var positionMs = ClampPlaybackPosition(Current.PositionMs);
+                if (positionMs > 0 && positionMs < Current.DurationMs - EndOfTrackResumeMarginMs)
+                    SetPendingRestoreSeek(positionMs, shownTrackUri);
+
+                LogService.Info($"[MediaService.ResumeCoreAsync] Engine stopped; reloading {shownTrackUri} from {contextUri}.");
+                _restoredSnapshotPendingResume = false;
+                await PlayCoreAsync(contextUri, shownTrackUri).ConfigureAwait(false);
                 return;
             }
 
@@ -2689,6 +2711,7 @@ namespace LibreSpotUWP.Services
                 PersistPlaybackSnapshot(forceWrite: true);
 
                 LogService.Info($"[MediaService.OnTrackChanged] Accepted track marker uri={track.Uri}, generation={track.AudioGeneration}, request={track.PlayRequestId}, preloaded={track.WasPreloaded}.");
+                if (XboxBackgroundMemory.IsEnabled) { XboxBackgroundMemory.LogUsage("track changed"); }
 
                 uint seekPosition;
                 if (TryTakePendingRestoreSeek(track.Uri, out seekPosition))
