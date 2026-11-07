@@ -656,6 +656,15 @@ namespace LibreSpotUWP.Views.Win11
             await dialog.ShowAsync();
         }
 
+        // XPOTIFY FORK: Web Playback SDK feasibility test for accounts blocked by librespot #1649.
+        private void WebPlayerTestButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.Current.Content is Frame rootFrame)
+            {
+                rootFrame.Navigate(typeof(LibreSpotUWP.WebPlaybackProbePage));
+            }
+        }
+
         protected async void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             var scrollContent = new ScrollViewer

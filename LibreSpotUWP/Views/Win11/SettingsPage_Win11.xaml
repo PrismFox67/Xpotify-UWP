@@ -504,6 +504,10 @@
                             HorizontalAlignment="Stretch"
                             Click="DisclaimerButton_Click"
                             Content="Disclaimer &amp; Legal" />
+                        <Button
+                            HorizontalAlignment="Stretch"
+                            Click="WebPlayerTestButton_Click"
+                            Content="Web player test (experimental)" />
                     </StackPanel>
                 </muxc:Expander>
             </StackPanel>

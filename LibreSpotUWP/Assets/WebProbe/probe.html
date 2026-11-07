@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xpotify web player test</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 24px 48px; background: #121212; color: #e0e0e0; font: 18px/1.4 "Segoe UI", sans-serif; }
+  h1 { color: #1DB954; font-size: 28px; margin: 0 0 8px; }
+  p { color: #b3b3b3; margin: 0 0 16px; max-width: 900px; }
+  button { font: inherit; padding: 10px 22px; margin: 0 12px 16px 0; border: 2px solid #1DB954; border-radius: 24px; background: transparent; color: #fff; }
+  button:focus { background: #1DB954; color: #000; outline: none; }
+  #verdict { font-size: 22px; font-weight: 600; margin: 0 0 12px; }
+  #log { white-space: pre-wrap; font: 14px/1.35 Consolas, monospace; color: #c8c8c8; }
+  .ok { color: #1DB954; } .bad { color: #ff6b6b; }
+</style>
+</head>
+<body>
+<h1>Web player test</h1>
+<p>Checks whether Spotify's official web player can play music on this console when librespot is blocked. When the song is playing, press the Xbox button and go to Home. Wait about a minute, then come back and check whether the position kept moving.</p>
+<button id="play">Play test song</button><button id="pause">Pause</button>
+<div id="verdict">Starting...</div>
+<div id="log"></div>
+<script>
+(function () {
+  "use strict";
+  var host = window.chrome && window.chrome.webview;
+  var token = null, tokenWaiters = [], player = null, deviceId = null;
+  var trackUri = "spotify:track:4cOdK2wGLETKBW3PvgPWqT";
+  var lastPos = -1, startedAt = 0;
+
+  function send(kind, text) {
+    var line = new Date().toISOString().substr(11, 12) + " " + kind + " " + text;
+    var el = document.getElementById("log");
+    el.textContent = line + "\n" + el.textContent;
+    if (host) { host.postMessage(JSON.stringify({ type: "log", kind: kind, text: text })); }
+  }
+  var settled = false;
+  function verdict(text, good) {
+    if (good !== null) { settled = true; }
+    var v = document.getElementById("verdict");
+    v.textContent = text; v.className = good ? "ok" : (good === false ? "bad" : "");
+    send("VERDICT", text);
+  }
+  function getToken(cb) {
+    if (token) { cb(token); return; }
+    tokenWaiters.push(cb);
+    if (host) { host.postMessage(JSON.stringify({ type: "needToken" })); }
+  }
+
+  if (host) {
+    host.addEventListener("message", function (e) {
+      var msg = e.data;
+      if (typeof msg === "string") { try { msg = JSON.parse(msg); } catch (x) { return; } }
+      if (msg.type === "token") {
+        token = msg.token;
+        if (msg.trackUri) { trackUri = msg.trackUri; }
+        var w = tokenWaiters; tokenWaiters = [];
+        w.forEach(function (cb) { cb(token); });
+      }
+    });
+  }
+
+  send("ENV", "secureContext=" + window.isSecureContext + " ua=" + navigator.userAgent);
+
+  // Watchdog: if nothing succeeded or failed clearly within 45 seconds, say so.
+  setTimeout(function () {
+    if (!settled) {
+      verdict(deviceId
+        ? "The web player connected but no music started within 45 seconds. Try 'Play test song'; if it still doesn't play, the test failed."
+        : "The web player did not connect within 45 seconds. The test failed.", false);
+      settled = false; // a later success can still overwrite this
+    }
+  }, 45000);
+  document.addEventListener("visibilitychange", function () { send("VIS", "visibility=" + document.visibilityState); });
+
+  // 1. DRM check. Spotify's web player needs Widevine; the others are for comparison.
+  var systems = ["com.widevine.alpha", "com.microsoft.playready.recommendation", "com.microsoft.playready", "org.w3.clearkey"];
+  var config = [{
+    initDataTypes: ["cenc"],
+    audioCapabilities: [{ contentType: 'audio/mp4; codecs="mp4a.40.2"' }, { contentType: 'audio/mp4; codecs="flac"' }]
+  }];
+  var drmChecks = systems.map(function (ks) {
+    if (!navigator.requestMediaKeySystemAccess) { send("DRM", ks + " => EME API missing"); return Promise.resolve(false); }
+    return navigator.requestMediaKeySystemAccess(ks, config).then(function () {
+      send("DRM", ks + " => supported"); return ks === "com.widevine.alpha";
+    }, function (err) {
+      send("DRM", ks + " => NOT supported (" + (err && err.name) + ")"); return false;
+    });
+  });
+
+  Promise.all(drmChecks).then(function (results) {
+    if (!results[0]) { verdict("Widevine is not available in this WebView. Spotify's web player will probably refuse to start; trying anyway.", false); }
+    else { verdict("Widevine is available. Loading Spotify's web player...", null); }
+    loadSdk();
+  });
+
+  function loadSdk() {
+    window.onSpotifyWebPlaybackSDKReady = createPlayer;
+    var s = document.createElement("script");
+    s.src = "https://sdk.scdn.co/spotify-player.js";
+    s.onerror = function () { verdict("Could not download Spotify's web player script.", false); };
+    document.head.appendChild(s);
+  }
+
+  function createPlayer() {
+    send("SDK", "script loaded");
+    player = new window.Spotify.Player({ name: "Xpotify web test", getOAuthToken: getToken, volume: 0.7 });
+    ["initialization_error", "authentication_error", "account_error", "playback_error"].forEach(function (ev) {
+      player.addListener(ev, function (e) { verdict(ev + ": " + (e && e.message), false); });
+    });
+    player.addListener("autoplay_failed", function () { verdict("The browser blocked autoplay. Press 'Play test song'.", null); });
+    player.addListener("not_ready", function (e) { send("SDK", "device went offline " + (e && e.device_id)); });
+    player.addListener("ready", function (e) {
+      deviceId = e.device_id;
+      send("SDK", "ready, device_id=" + deviceId);
+      verdict("Web player connected. Starting the test song...", null);
+      startPlayback();
+    });
+    player.addListener("player_state_changed", function (st) {
+      if (!st) { return; }
+      var t = st.track_window && st.track_window.current_track;
+      send("STATE", (st.paused ? "paused" : "playing") + " pos=" + st.position + " track=" + (t ? t.name : "?"));
+    });
+    player.connect().then(function (ok) { send("SDK", "connect() => " + ok); });
+    setInterval(poll, 5000);
+  }
+
+  function startPlayback() {
+    if (!deviceId) { send("PLAY", "no device yet"); return; }
+    if (player && player.activateElement) { try { player.activateElement(); } catch (x) {} }
+    getToken(function (tk) {
+      fetch("https://api.spotify.com/v1/me/player/play?device_id=" + encodeURIComponent(deviceId), {
+        method: "PUT",
+        headers: { "Authorization": "Bearer " + tk, "Content-Type": "application/json" },
+        body: JSON.stringify({ uris: [trackUri] })
+      }).then(function (r) {
+        send("PLAY", "Web API play => HTTP " + r.status);
+        if (r.status >= 300) {
+          return r.text().then(function (b) {
+            send("PLAY", b.substr(0, 300));
+            verdict("Spotify refused to start the song (HTTP " + r.status + "). The test failed.", false);
+          });
+        }
+        startedAt = Date.now();
+      }, function (err) { verdict("Could not reach Spotify to start the song: " + err, false); });
+    });
+  }
+
+  function poll() {
+    if (!player) { return; }
+    player.getCurrentState().then(function (st) {
+      if (!st) { return; }
+      var moving = lastPos >= 0 && st.position > lastPos;
+      send("POLL", (st.paused ? "paused" : "playing") + " pos=" + st.position + " vis=" + document.visibilityState);
+      if (!st.paused && moving && startedAt) {
+        verdict("Playing: the position is advancing. Now test the background (Xbox button, then Home).", true);
+      }
+      lastPos = st.position;
+    });
+  }
+
+  document.getElementById("play").addEventListener("click", function () {
+    if (player && player.activateElement) { player.activateElement(); }
+    if (deviceId) { startPlayback(); } else { send("PLAY", "player not ready yet"); }
+  });
+  document.getElementById("pause").addEventListener("click", function () { if (player) { player.togglePlay(); } });
+  document.getElementById("play").focus();
+})();
+</script>
+</body>
+</html>

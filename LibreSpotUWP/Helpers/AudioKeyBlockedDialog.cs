@@ -71,10 +71,17 @@ namespace LibreSpotUWP.Helpers
                 {
                     Title = "Spotify blocked this song",
                     Content = content,
-                    PrimaryButtonText = "Close"
+                    PrimaryButtonText = "Close",
+                    // XPOTIFY FORK: experimental Web Playback SDK test for blocked accounts.
+                    SecondaryButtonText = "Try web player (test)"
                 };
 
-                await dialog.ShowAsync();
+                if (await dialog.ShowAsync() == ContentDialogResult.Secondary &&
+                    Window.Current.Content is Frame frame)
+                {
+                    LogService.Info("[AudioKeyBlockedDialog] Opening web player test.");
+                    frame.Navigate(typeof(WebPlaybackProbePage));
+                }
             }
             catch (Exception ex)
             {
