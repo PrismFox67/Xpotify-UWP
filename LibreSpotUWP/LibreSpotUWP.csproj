@@ -218,6 +218,7 @@
     <Compile Include="XboxLoginPage.xaml.cs">
       <DependentUpon>XboxLoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AudioKeyBlockedDialog.cs" />
     <Compile Include="Helpers\PremiumRequiredDialog.cs" />
     <Compile Include="Helpers\PlaybackAuthorizationDialog.cs" />
     <Compile Include="Helpers\PlaybackBrowserAuthorizationHelper.cs" />

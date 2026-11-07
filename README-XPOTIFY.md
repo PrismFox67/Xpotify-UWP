@@ -132,8 +132,11 @@ same submission, its framework dependencies (`Microsoft.UI.Xaml.2.8`, `Microsoft
 - **Spotify Premium is required.** librespot cannot play on free accounts.
 - **Unofficial client.** It uses a reverse-engineered protocol, which is against Spotify's
   terms of service. Use it at your own risk.
-- **Known upstream issue:** some newer accounts hit an audio-key block
-  ([librespot #1649](https://github.com/librespot-org/librespot/issues/1649)).
+- **Some accounts can't play music at all.** Spotify refuses audio keys to many accounts
+  created in 2024 or later, in every librespot-based app
+  ([librespot #1649](https://github.com/librespot-org/librespot/issues/1649)). Browsing works,
+  but Play does nothing and songs won't start. There is no known fix; Xpotify shows a message
+  when it happens.
 
 ## Status
 

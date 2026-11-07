@@ -3092,11 +3092,14 @@ namespace LibreSpotUWP.Services
             UpdateState(state =>
             {
                 state.PlaybackState = LibrespotPlaybackState.Stopped;
-                state.StatusMessage = "Spotify rejected this account's audio key. This is a known Spotify/librespot compatibility issue.";
+                state.StatusMessage = "Spotify refused the audio key for this song. If every song fails, Spotify is blocking playback for this account.";
             });
             _smtc.PlaybackStatus = MediaPlaybackStatus.Stopped;
             PersistPlaybackSnapshot(forceWrite: true);
             LogService.Warn($"[MediaService.HandleAudioKeyUnavailable] Playback stopped without queue skipping. track={playbackEvent.TrackUri ?? "(unknown)"}, sessionGeneration={playbackEvent.SessionGeneration}.");
+
+            // The status message above is only shown while recovering, so tell the user directly.
+            Helpers.AudioKeyBlockedDialog.ShowOnce();
         }
 
         private async Task<bool> TryHandleUnavailableApplicationQueueTrackAsync(

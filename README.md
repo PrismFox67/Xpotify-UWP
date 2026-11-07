@@ -50,6 +50,9 @@
 ### Can I use LibreSpotUWP with a Spotify Free account?
 #### No. LibreSpotUWP requires Spotify Premium because playback uses Spotify features that are not available to Free accounts. If you try to sign in with a Free account, the app will reject the sign-in and ask you to use Spotify Premium.
 
+### I have Premium, but Play does nothing and I can't start a song. Why?
+#### Spotify refuses to send audio keys to many accounts created in 2024 or later, in every app built on librespot. Browsing still works, but music can't play. This is a Spotify-side change with no known fix. See [librespot #1649](https://github.com/librespot-org/librespot/issues/1649).
+
 ### How do I login?
 #### To login, you must do the following:
 1. Download the latest version of [LibreSpotUWP Login Helper](https://github.com/megabytesme/LibreSpotUWPLoginHelper/releases/latest)
