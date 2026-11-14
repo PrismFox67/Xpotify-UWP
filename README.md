@@ -1,129 +1,137 @@
-### Download
+# Xpotify UWP
+
+**Spotify on Xbox in Developer Mode, with music that keeps playing in the background.**
+
 [![Xbox app downloads](https://img.shields.io/github/downloads/PrismFox67/Xpotify-UWP/total?label=Xbox%20app%20downloads&color=107c10&cacheSeconds=3600)](https://github.com/PrismFox67/Xpotify-UWP/releases)
 (all builds since 11/5/2026)
 
-> ## Xpotify UWP — Xbox Dev Mode edition of [LibreSpotUWP](https://github.com/megabytesme/LibreSpotUWP)
->
-> **All credit for this application goes to [megabytesme](https://github.com/megabytesme).**
-> They built LibreSpotUWP — the entire Spotify client, and the UWP-safe native build of
+Xpotify UWP is an unofficial Spotify client for Xbox Series X|S in Developer Mode, where the
+retail Spotify app isn't available. Start a song, go back to the dashboard or open another
+app or homebrew, and the music keeps playing.
+
+![Xpotify UWP home screen with Your Library on the left and Now Playing on the right](docs/screenshots/xpotify-home.png)
+
+_The Xpotify layout, shown in a PC window with sample data._
+
+**[Download the latest release](https://github.com/PrismFox67/Xpotify-UWP/releases/latest)**
+
+> **All credit for the application itself goes to [megabytesme](https://github.com/megabytesme).**
+> They built [LibreSpotUWP](https://github.com/megabytesme/LibreSpotUWP): the entire Spotify
+> client, and the UWP-safe native build of
 > [librespot](https://github.com/librespot-org/librespot) that makes playback possible.
 > Please go star [their repository](https://github.com/megabytesme/LibreSpotUWP).
 >
-> Xpotify UWP is a fork of **Spotbox**, which ported LibreSpotUWP to **Xbox in Developer
-> Mode** so music keeps playing in the background while you use the dashboard or run
-> homebrew. This fork's changes are in **[README-XPOTIFY.md](README-XPOTIFY.md)**; Spotbox's
-> are in **[README-SPOTBOX-FORK.md](README-SPOTBOX-FORK.md)**.
->
-> Licensed **CC BY-NC-SA 4.0**, inherited from upstream: attribution required,
-> non-commercial use only, and derivatives must share alike. See [LICENSE.md](LICENSE.md).
+> Xpotify UWP is a fork of **Spotbox**
+> ([maayan080/LibreSpotUWP-XBOX-edition](https://github.com/maayan080/LibreSpotUWP-XBOX-edition)),
+> which ported LibreSpotUWP to Xbox in Developer Mode.
 
 | <img src="https://lh3.googleusercontent.com/d/1hSA_iUoTwoUQZpBEBOIo5psZdz1byDeC" width="80" alt="real rating"> | **Note:** This **fork** was made with the use of AI. Read more about the rating [here](https://www.realgoodai.org/real-rating). |
 | :---: | :--- |
 
-> The original upstream README follows.
-
----
-| <h1>LibreSpotUWP</h1> | <img src="https://github.com/user-attachments/assets/b53f3efe-a089-4e68-8caa-57a0bf2693a9" width="60" height="60"> |
-| --- | --- |
-
-**LibreSpotUWP** is a Spotify client designed with UWP in mind, powered by LibreSpot. **A Spotify Premium account is required. Spotify Free accounts are not supported.** It works with Spotify Connect.
-
-**Disclaimer:** This is an unofficial, third-party implementation of a Spotify client for the Universal Windows Platform (UWP). This project is not affiliated with, endorsed, or sponsored by Spotify AB. Spotify is a trademark of Spotify AB.
-
-| Lumia 950 XL | Surface Duo | PC |
-|--------------|-------------|-------------|
-| <img width="250" height="440" alt="Lumia 950 XL - Windows 10 Mobile - Now Playing Page" src="https://github.com/user-attachments/assets/9c04b10f-d6fb-497e-b5a1-9a6a4d5a62a0" /> <img width="250" height="440" alt="Lumia 950 XL - Windows 10 Mobile - Lyrics Page using Spotify Colour Theme" src="https://github.com/user-attachments/assets/b84d7866-a252-4612-b0e6-e0301d8d6b71" /> | TODO: Add photos | <img width="666" height="444" alt="Windows 11 - Liked Songs Page" src="https://github.com/user-attachments/assets/f74e715f-85ab-4d7e-acb4-d21a02980b5b" /> <img width="666" height="444" alt="Windows 11 - Lyrics Page using Spotify Colour Theme" src="https://github.com/user-attachments/assets/6ab08ecf-9a84-40df-9df1-4493f3552104" /> |
-| _Windows 10 Mobile â€“ 15254.603, ARM_ | _Andromeda OS (8828080) â€“ 18236.1000, ARM64_ | _Windows 11 - 26200.8655, X64_ |
+**Disclaimer:** This is an unofficial, third-party Spotify client. It is not affiliated with,
+endorsed or sponsored by Spotify AB or Microsoft. It uses a reverse-engineered protocol,
+which is against Spotify's terms of service, so use it at your own risk.
 
 ## Features
 
-*   **Fully Featured:** Has support for synced lyrics, SMTC (System Media Transport Control - For track metadata across apps and accessories) and more.
-*   **Offline Compatible:** Designed to work offline and online (or anything in-between), along with support for persisting tracks (for upto 30 days at a time).
-*   **Native & Lightweight:** A fully functional Spotify client running as a UWP app - Uses upto **67%** less RAM than the official Spotify client!
-*   **Universal:** Runs natively on **x64**, **x86**, **ARM64**, and **ARM32**.
-*   **Fluent:** Features a fluent Windows design, matching the OS it is installed on (Windows 10, Windows 10 Fluent (Acrylic) and Windows 11 Mica (AKA Sun Valley).
+- **Background playback.** Music keeps playing on the dashboard and while you use other apps
+  and homebrew. Confirmed across several songs on an Xbox Series X.
+- **Spotify-style layout.** A top bar with search, Your Library on the left and a Now Playing
+  panel on the right, sized for a TV. The original LibreSpotUWP layout is still available
+  under Settings > Appearance.
+- **Sign-in with a controller.** One **Sign in with Spotify** button opens Spotify's sign-in
+  page inside the app. No second device or helper app is needed.
+- **Spotify Connect.** Pick the Xbox from the Spotify app on your phone and control it from
+  there.
+- **Spotify DJ.** From 1.1.8.0, start DJ from the Spotify app on your phone with the Xbox
+  selected, and you'll hear the DJ between songs.
+- **Streaming quality setting.** 96, 160 or 320 kbps. The default is 320.
+- **A clear message when Spotify blocks playback** for your account (see the FAQ), instead
+  of a Play button that does nothing.
+- **Update notices.** The app tells you when a new full release is out.
 
-## Download
-### See the [Latest Release](https://github.com/megabytesme/LibreSpotUWP/releases/latest).
+Your library, playlists, search and synced lyrics all come from LibreSpotUWP.
+
+## You need
+
+- An Xbox Series X|S in Developer Mode (tested on a Series X only)
+- A Spotify Premium account
+- A PC on the same network, to install the app through Device Portal
+
+## Install
+
+1. Download the zip from the [latest release](https://github.com/PrismFox67/Xpotify-UWP/releases/latest)
+   and unzip it on a PC.
+2. On the Xbox, open Dev Home and enable Device Portal.
+3. On the PC, open the Device Portal address shown in Dev Home and choose **Add**.
+4. Select the `XpotifyUWP_..._x64.msix` file. When asked for dependencies, add every file in
+   the `Dependencies` folder.
+5. Finish the install. If Dev Home lists Xpotify UWP as a Game, change its type to **App**.
+6. Open Xpotify UWP and sign in.
+
+Updating works the same way, and you stay signed in.
+
+## Known issues
+
+- **Some accounts can't play music at all.** See the FAQ below.
+- **Background memory is close to the limit.** Usage sat at 96 to 100 MB of the 128 MB the
+  Xbox allows in the background during testing, so music could stop after a long session.
+- **Music may stop if you go Home soon after signing in.** Reopen the app and start a song
+  again.
+- The window can be blank for a few seconds when you come back to the app.
+- Some playlists have no artwork.
 
 ## FAQ
-### Can I use LibreSpotUWP with a Spotify Free account?
-#### No. LibreSpotUWP requires Spotify Premium because playback uses Spotify features that are not available to Free accounts. If you try to sign in with a Free account, the app will reject the sign-in and ask you to use Spotify Premium.
+
+### Can I use Xpotify UWP with a Spotify Free account?
+No. Playback uses Spotify features that Free accounts don't have. The app rejects the
+sign-in and asks for Spotify Premium.
 
 ### I have Premium, but Play does nothing and I can't start a song. Why?
-#### Spotify refuses to send audio keys to many accounts created in 2024 or later, in every app built on librespot. Browsing still works, but music can't play. This is a Spotify-side change with no known fix. See [librespot #1649](https://github.com/librespot-org/librespot/issues/1649).
+Spotify refuses to send audio keys to some accounts, in every app built on librespot. Newer
+accounts seem to be hit most often, but older ones are affected too, and Spotify hasn't said
+why. Browsing still works, but music can't play. This is a Spotify-side change with no known
+fix. Spotify's web player isn't a workaround on Xbox either, because the console's browser
+lacks the Widevine DRM it needs. See
+[librespot #1649](https://github.com/librespot-org/librespot/issues/1649).
 
-### How do I login?
-#### To login, you must do the following:
-1. Download the latest version of [LibreSpotUWP Login Helper](https://github.com/megabytesme/LibreSpotUWPLoginHelper/releases/latest)
-2. Follow the instructions within the release notes.
-3. Once you have completed the steps of the LibreSpotUWP Login Helper, you'll see a QR Code and the option to copy the text.
-4. On your device, open LibreSpotUWP and then press Login. Then press either Scan QR Code or Paste login text to complete the sign in.
+### How do I sign in?
+Open the app and choose **Sign in with Spotify**. Spotify's sign-in page opens inside the
+app, followed by a second page that authorizes playback. The LibreSpotUWP Login Helper isn't
+needed on Xbox.
 
-### After logging in, the app crashes/hangs (v1.0.0-v1.0.1)
-#### This is a known issue to be addressed - Currently if you keep opening the app enough times, it **will** work eventually (takes 3x attempts on a Lumia 950XL).
-#### If it still does not work then do the following and try again:
-1. Go to Windows Settings, then Apps, then Apps and Features, then LibreSpotUWP, then Advanced options, then Reset
+### Does it run on a PC?
+It does, and each release is tried on a PC first. But the package is signed with a
+self-signed certificate that Windows won't accept until you trust it, and the fork is tuned
+for a TV. For PCs, phones and other devices, upstream
+[LibreSpotUWP](https://github.com/megabytesme/LibreSpotUWP) is the better choice.
 
-### I had the beta installed (v0.1.0-beta), can I upgrade to the latest version?
-#### You must do the following before upgrading:
-1. If the beta is still installed and opens, make sure to log out.
-2. Install the newest release. 
-3. Go to Windows Settings, then Apps, then Apps and Features, then LibreSpotUWP, then Advanced options, then Reset
+### How do I report a bug?
+Open an [issue](https://github.com/PrismFox67/Xpotify-UWP/issues) and say what you did, what
+you expected and roughly when it happened. Attaching the log helps a lot. In Device Portal,
+go to File explorer > LocalAppData > PrismFox67.XpotifyUWP_16s1rqvrsbvgj > TempState and
+download `log.txt`. Don't post your password or anything from your Spotify sign-in.
 
-## Build Guide
+## Building and technical notes
 
-Building LibreSpotUWP is unique because it combines a C# UWP Host with a Rust Dynamic Library (`librespot.dll`).
+- **[README-XPOTIFY.md](README-XPOTIFY.md)** covers what this fork changes, how background
+  playback works on Xbox, and how to build the app.
+- **[README-SPOTBOX-FORK.md](README-SPOTBOX-FORK.md)** is Spotbox's own description of the
+  Xbox port, kept unchanged.
+- The upstream [LibreSpotUWP README](https://github.com/megabytesme/LibreSpotUWP#readme) has
+  the build guide for `librespot.dll` and for other devices.
 
-### Prerequisites
+## Credits
 
-*   **Rust Nightly Toolchain:** Required for the `-Z build-std` flag.
-*   **Visual Studio 2017 (or newer - 2026 recommended):**
-    *   **Workload:** Universal Windows Platform development.
-    *   **Workload:** Desktop development with C++.
-*   **Windows SDKs:** You **must** install these specific SDK versions via the VS Installer:
-    *   **10.0.10240.0** (Required for x86, x64, and ARM32 compatibility).
-    *   **10.0.16299.0** (Required for ARM64 compatibility).
- 
-## **1. Building the librespot Core (Rust)**  
-librespot is written in Rust and compiled as a **UWPâ€‘safe DLL** (`librespot.dll`).  
+- **[megabytesme](https://github.com/megabytesme)** wrote LibreSpotUWP, which is nearly all
+  of this application.
+- **Spotbox** ([maayan080/LibreSpotUWP-XBOX-edition](https://github.com/maayan080/LibreSpotUWP-XBOX-edition))
+  did the Xbox port and the in-app sign-in.
+- **[librespot](https://github.com/librespot-org/librespot)** implements the Spotify protocol.
 
-1) **Clone this librespot repository fork: https://github.com/megabytesme/librespot**
+## Licence
 
-    `git clone https://github.com/megabytesme/librespot.git`
+**CC BY-NC-SA 4.0**, inherited from upstream: attribution required, non-commercial use only,
+and derivatives must share alike. See [LICENSE.md](LICENSE.md).
 
-2) **Run the `deps.ps1` script from the root of the cloned repository before building to restore the required build dependancies!**
-
-    `.\deps.ps1`
-   
-3) **Run the appropriate build command from the root of the cloned repository:**
-
-| Target | Command | Typical Devices |
-|--------|--------|-------|
-| **ARM32** | `cargo +nightly build -Z "build-std=std,panic_abort" --target thumbv7a-uwp-windows-msvc --release --no-default-features --features "native-tls uwp-backend"` | Windows 10 Mobile, Windows RT Devices |
-| **ARM64** | `cargo +nightly build -Z "build-std=std,panic_abort" --target aarch64-uwp-windows-msvc --release --no-default-features --features "native-tls uwp-backend"` | Copilot Plus PCs, HoloLens 2, Surface Duo, WoA, Snapdragon or Microsoft SQ1-SQ3 |
-| **x86** | `cargo +nightly build -Z "build-std=std,panic_abort" --target i686-uwp-windows-msvc --release --no-default-features --features "native-tls uwp-backend"` | Older PCs (typically with 4GB RAM or less), emulators, HoloLens 1 |
-| **x64** | `cargo +nightly build -Z "build-std=std,panic_abort" --target x86_64-uwp-windows-msvc --release --no-default-features --features "native-tls uwp-backend"` | Modern PCs |
-
-Each script outputs a DLL to:
-
-```
-target/(ARCHITECTURE - i.e thumbv7a, aarch64, i686 or x86_64)-uwp-windows-msvc/release/librespot.dll
-```
-
-## **2. Building the UWP Host App (C#)**  
-Open the solution:
-
-```
-LibreSpotUWP.sln
-```
-
-### **Steps:**
-1. Copy the generated `librespot.dll` into the **root directory** of the UWP project you intend to run.  
-2. In Visual Studio, set **Solution Platform** to match your target device:  
-   - `ARM` â†’ Windows 10 Mobile (MUST BE RELEASE BUILD)  
-   - `ARM64` â†’ HoloLens 2, Windows on ARM  
-   - `x86` â†’ Emulators, older PCs  
-   - `x64` â†’ Modern PCs  
-3. Press **F5** to deploy and run.
-
+Spotify is a trademark of Spotify AB. Xbox is a trademark of Microsoft.
